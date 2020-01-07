@@ -8,7 +8,8 @@ var FacebookTokenStrategy = require('passport-facebook-token');
 
 var config = require('./config');
 
-exports.local = passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy());
+
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 

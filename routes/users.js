@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
 
 router.post('/signup', (req, res, next) => {
   User.register(
-    new User({ username: req.body.username }),
+    new User({ email: req.body.email }),
     req.body.password,
     (err, user) => {
       if (err) {

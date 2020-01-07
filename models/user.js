@@ -18,6 +18,9 @@ var User = new Schema({
   }
 });
 
-User.plugin(passportLocalMongoose);
+User.plugin(passportLocalMongoose, {
+  usernameField: 'email',
+  usernameUnique: false
+});
 
 module.exports = mongoose.model('User', User);
