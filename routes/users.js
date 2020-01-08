@@ -22,7 +22,11 @@ router.get('/', function(req, res, next) {
 
 router.post('/signup', (req, res, next) => {
   User.register(
-    new User({ email: req.body.email }),
+    new User({
+      email: req.body.email,
+      name: req.body.name,
+      division: req.body.division
+    }),
     req.body.password,
     (err, user) => {
       if (err) {
@@ -30,8 +34,10 @@ router.post('/signup', (req, res, next) => {
         res.setHeader('Content-Type', 'application/json');
         res.json({ err: err });
       } else {
-        if (req.body.firstname) user.firstname = req.body.firstname;
-        if (req.body.lastname) user.lastname = req.body.lastname;
+        if (req.body.designation) user.designation = req.body.designation;
+        if (req.body.contact) user.contact = req.body.contact;
+        if (req.body.role === 'emp' || req.body.role === 'qrg')
+          user.role = req.body.role;
         user.save((err, user) => {
           if (err) {
             res.statusCode = 500;

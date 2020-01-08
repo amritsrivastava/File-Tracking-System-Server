@@ -38,8 +38,28 @@ exports.jwtPassport = passport.use(
 
 exports.verifyUser = passport.authenticate('jwt', { session: false });
 
+exports.verifyEmp = (req, res, next) => {
+  if (req.user.role === 'emp') {
+    next();
+  } else {
+    var err = new Error('You are not authorized to perform this operation!');
+    err.status = 403;
+    next(err);
+  }
+};
+
+exports.verifyQrg = (req, res, next) => {
+  if (req.user.role === 'qrg') {
+    next();
+  } else {
+    var err = new Error('You are not authorized to perform this operation!');
+    err.status = 403;
+    next(err);
+  }
+};
+
 exports.verifyAdmin = (req, res, next) => {
-  if (req.user.admin) {
+  if (req.user.role === 'admin') {
     next();
   } else {
     var err = new Error('You are not authorized to perform this operation!');
