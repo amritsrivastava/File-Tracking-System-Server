@@ -10,6 +10,7 @@ const swaggerUi = require('swagger-ui-express');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var uploadRouter = require('./routes/uploadRouter');
+var processRouter = require('./routes/processRouter');
 const apiDoc = require('./docs/apiDoc.json');
 
 const mongoose = require('mongoose');
@@ -51,6 +52,7 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/processes', processRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDoc));
 
