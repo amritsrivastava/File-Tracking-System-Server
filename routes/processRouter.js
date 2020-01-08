@@ -2,13 +2,14 @@ var express = require('express');
 const bodyParse = require('body-parser');
 var Process = require('../models/process');
 var processRouter = express.Router();
+const authenticate = require('../authenticate');
 
 processRouter.use(bodyParse.json());
-
+processRouter.use(authenticate.verifyUser);
 /* GET users listing. */
 processRouter
   .route('/')
-  .get((req, res, next) => {
+  .get(authenticate.verifyAdmin, (req, res, next) => {
     Process.find()
       .then(
         processes => {
@@ -20,7 +21,7 @@ processRouter
       )
       .catch(err => next(err));
   })
-  .post((req, res, next) => {
+  .post(authenticate.verifyAdmin, (req, res, next) => {
     if (req.body != null) {
       Process.create(req.body)
         .then(
@@ -42,7 +43,7 @@ processRouter
     res.statusCode = 403;
     res.end('PUT operation not supported on /processes/');
   })
-  .delete((req, res, next) => {
+  .delete(authenticate.verifyAdmin, (req, res, next) => {
     Process.remove({})
       .then(
         resp => {
@@ -75,7 +76,7 @@ processRouter
       'POST operation not supported on /processes/' + req.params.commentId
     );
   })
-  .put((req, res, next) => {
+  .put(authenticate.verifyAdmin, (req, res, next) => {
     Process.findById(req.params.processId)
       .then(
         process => {
@@ -104,7 +105,7 @@ processRouter
       )
       .catch(err => next(err));
   })
-  .delete((req, res, next) => {
+  .delete(authenticate.verifyAdmin, (req, res, next) => {
     Process.findByIdAndRemove(req.params.processId)
       .then(
         resp => {

@@ -1,13 +1,15 @@
 var express = require('express');
 const bodyParse = require('body-parser');
 const User = require('../models/user');
-var employeeRouter = express.Router();
+var verifyEmployeeRouter = express.Router();
+const authenticate = require('../authenticate');
 
-employeeRouter.use(bodyParse.json());
+verifyEmployeeRouter.use(bodyParse.json());
+verifyEmployeeRouter.use(authenticate.verifyUser);
 
-employeeRouter
-  .route('/verify')
-  .get((req, res, next) => {
+verifyEmployeeRouter
+  .route('/')
+  .get(authenticate.verifyAdmin, (req, res, next) => {
     User.find({ isVerified: false })
       .then(
         emp => {
@@ -19,7 +21,7 @@ employeeRouter
       )
       .catch(err => next(err));
   })
-  .post((req, res, next) => {
+  .post(authenticate.verifyAdmin, (req, res, next) => {
     if (req.body) {
       req.body.forEach(_id => {
         User.findByIdAndUpdate({ _id }, { isVerified: true }).catch(err =>
@@ -40,8 +42,8 @@ employeeRouter
     res.end('DELETE operation not supported on /employee/verify');
   });
 
-employeeRouter
-  .route('/verify/:userId')
+verifyEmployeeRouter
+  .route('/:userId')
   .get((req, res, next) => {
     User.findById(req.params.userId)
       .then(
@@ -54,7 +56,7 @@ employeeRouter
       )
       .catch(err => next(err));
   })
-  .post((req, res, next) => {
+  .post(authenticate.verifyAdmin, (req, res, next) => {
     User.findByIdAndUpdate(req.params.userId, { isVerified: true })
       .then(
         resp => {
@@ -79,4 +81,4 @@ employeeRouter
     );
   });
 
-module.exports = employeeRouter;
+module.exports = verifyEmployeeRouter;
