@@ -39,3 +39,15 @@ var Process = new Schema({
 });
 
 module.exports = mongoose.model('Process', Process);
+// {
+//   "title": "test",
+//   "description": "description",
+//   "name": "abc",
+//   "steps":[
+//     {
+//       "title": "xyz",
+//       "duration": 3,
+//       "division": "pqr",
+//       "sno": 99
+//     }]
+// }
