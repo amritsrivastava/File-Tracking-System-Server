@@ -109,12 +109,12 @@ Now multiple members can have same branch names but different because of usernam
 
 # APIs Testing Instructions
 
-1. Use this IP for calling APIs [13.233.200.7:3443](13.233.200.7:3443)
+1. Use this IP for calling APIs [https://13.233.200.7:3443](https://13.233.200.7:3443)
 2. Admin account details :
 
     ```
     {
       "email": "admin@gmail.com",
-      "password: "password"
+      "password": "password"
     }
     ```
