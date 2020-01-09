@@ -55,7 +55,7 @@ app.use(passport.initialize());
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/employee', employeeRouter);
+app.use('/employees', employeeRouter);
 app.use('/employee/verify', verifyEmployeeRouter);
 app.use('/processes', processRouter);
 app.use('/files', fileRouter);

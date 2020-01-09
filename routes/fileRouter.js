@@ -70,7 +70,7 @@ fileRouter
   })
   .post((req, res, next) => {
     res.statusCode = 403;
-    res.end('POST operation not supported on /files/' + req.params.commentId);
+    res.end('POST operation not supported on /files/' + req.params.fileId);
   })
   .put((req, res, next) => {
     File.findById(req.params.fileId)
