@@ -10,7 +10,7 @@ verifyEmployeeRouter.use(authenticate.verifyUser);
 verifyEmployeeRouter
   .route('/')
   .get(authenticate.verifyAdmin, (req, res, next) => {
-    User.find({ isVerified: false })
+    User.find({ isVerified: false, role: { $in: ['qrg', 'emp'] } })
       .then(
         emp => {
           res.statusCode = 200;
@@ -45,16 +45,10 @@ verifyEmployeeRouter
 verifyEmployeeRouter
   .route('/:userId')
   .get((req, res, next) => {
-    User.findById(req.params.userId)
-      .then(
-        user => {
-          res.statusCode = 200;
-          res.setHeader('Content-Type', 'application/json');
-          res.json(user);
-        },
-        err => next(err)
-      )
-      .catch(err => next(err));
+    res.statusCode = 403;
+    res.end(
+      'GET operation not supported on /employee/verify/' + req.params.userId
+    );
   })
   .post(authenticate.verifyAdmin, (req, res, next) => {
     User.findByIdAndUpdate(req.params.userId, { isVerified: true })

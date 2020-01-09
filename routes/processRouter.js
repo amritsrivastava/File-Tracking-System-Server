@@ -73,7 +73,7 @@ processRouter
   .post((req, res, next) => {
     res.statusCode = 403;
     res.end(
-      'POST operation not supported on /processes/' + req.params.commentId
+      'POST operation not supported on /processes/' + req.params.processId
     );
   })
   .put(authenticate.verifyAdmin, (req, res, next) => {
