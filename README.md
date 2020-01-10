@@ -20,6 +20,8 @@ This is the server of File Tracking System implemented for the Smart India Hacka
 
 - [APIs Testing Instructions](#apis-testing-instructions)
 
+- [APIs Documentation](https://13.233.200.7:3443/api-docs)
+
   # Requirements
 
 - Node.js
@@ -58,13 +60,15 @@ You can find installation instructions according to your system at [Install Mong
 
 3. Now install dependencies using `npm install`.
 
-4. After installation, you can run server by `npm start`
+4. Start your mongodb server `sudo service mongod start`
 
-5. Your server is running at Secure port : <http://localhost:3443>, Unsecured port : <http://localhost:3000>.
+5. After installation, you can run server by `npm start`
 
-6. You can start editing code in your favorite editor.
+6. Your server is running at Secure port : <http://localhost:3443>, Unsecured port : <http://localhost:3000>.
 
-7. That's it.
+7. You can start editing code in your favorite editor.
+
+8. That's it.
 
 # Contributing Guidelines
 
