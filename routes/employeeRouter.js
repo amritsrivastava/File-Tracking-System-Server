@@ -1,12 +1,15 @@
 var express = require('express');
 const bodyParse = require('body-parser');
 var Employee = require('../models/user');
+const authenticate = require('../authenticate');
 var employeeRouter = express.Router();
 
 employeeRouter.use(bodyParse.json());
+employeeRouter.use(authenticate.verifyUser);
+
 employeeRouter
   .route('/')
-  .get((req, res, next) => {
+  .get(authenticate.verifyAdmin, (req, res, next) => {
     Employee.find()
       .then(
         employees => {
@@ -26,8 +29,8 @@ employeeRouter
     res.statusCode = 403;
     res.end('PUT operation not supported on /employees/');
   })
-  .delete((req, res, next) => {
-    Employee.remove({})
+  .delete(authenticate.verifyAdmin, (req, res, next) => {
+    Employee.remove({ role: { $in: ['emp', 'qrg'] } })
       .then(
         resp => {
           res.statusCode = 200;
@@ -42,7 +45,7 @@ employeeRouter
 employeeRouter
   .route('/:empID')
   .get((req, res, next) => {
-    Employee.findById(req.param.empID)
+    Employee.findById(req.params.empID)
       .then(
         employee => {
           res.statusCode = 200;
@@ -59,46 +62,54 @@ employeeRouter
       'POST operation not supported on /employees/' + req.params.commentId
     );
   })
-  .put((req, res, next) => {
-    Employee.findById(req.params.empID)
-      .then(
-        employee => {
-          if (employee != null) {
-            Process.findByIdAndUpdate(
-              req.params.empID,
-              {
-                $set: req.body
-              },
-              { new: true }
-            ).then(
-              employee => {
-                res.statusCode = 200;
-                res.setHeader('Content-Type', 'application/json');
-                res.json(employee);
-              },
-              err => next(err)
-            );
-          } else {
-            err = new Error('Employee ' + req.params.empID + ' not found');
-            err.status = 404;
-            return next(err);
-          }
-        },
-        err => next(err)
-      )
-      .catch(err => next(err));
-  })
-  .delete((req, res, next) => {
-    Employee.findByIdAndRemove(req.params.empID)
-      .then(
-        resp => {
-          res.statusCode = 200;
-          res.setHeader('Content-Type', 'application/json');
-          res.json(resp);
-        },
-        err => next(err)
-      )
-      .catch(err => next(err));
-  });
+  .put(
+    authenticate.verifyEmpAndQrg,
+    authenticate.verifyEmpID,
+    (req, res, next) => {
+      Employee.findById(req.params.empID)
+        .then(
+          employee => {
+            if (employee != null) {
+              Process.findByIdAndUpdate(
+                req.params.empID,
+                {
+                  $set: req.body
+                },
+                { new: true }
+              ).then(
+                employee => {
+                  res.statusCode = 200;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.json(employee);
+                },
+                err => next(err)
+              );
+            } else {
+              err = new Error('Employee ' + req.params.empID + ' not found');
+              err.status = 404;
+              return next(err);
+            }
+          },
+          err => next(err)
+        )
+        .catch(err => next(err));
+    }
+  )
+  .delete(
+    authenticate.verifyEmpAndQrg,
+    authenticate.verifyEmpID,
+    (req, res, next) => {
+      Employee.findByIdAndRemove(req.params.empID)
+        .then(
+          resp => {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(resp);
+          },
+          err => next(err)
+        )
+        .catch(err => next(err));
+    }
+  );
 
 module.exports = employeeRouter;
