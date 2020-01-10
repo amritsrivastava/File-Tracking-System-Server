@@ -1,5 +1,4 @@
 var passport = require('passport');
-var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/user');
 var JwtStrategy = require('passport-jwt').Strategy;
 var ExtractJWT = require('passport-jwt').ExtractJwt;
@@ -50,6 +49,27 @@ exports.verifyEmp = (req, res, next) => {
 
 exports.verifyQrg = (req, res, next) => {
   if (req.user.role === 'qrg') {
+    next();
+  } else {
+    var err = new Error('You are not authorized to perform this operation!');
+    err.status = 403;
+    next(err);
+  }
+};
+
+exports.verifyEmpAndQrg = (req, res, next) => {
+  if (req.user.role === 'qrg' || req.user.role === 'emp') {
+    next();
+  } else {
+    var err = new Error('You are not authorized to perform this operation!');
+    err.status = 403;
+    next(err);
+  }
+};
+
+exports.verifyEmpID = (req, res, next) => {
+  const paramsId = Object.values(req.params)[0];
+  if (JSON.stringify(paramsId) === JSON.stringify(req.user._id)) {
     next();
   } else {
     var err = new Error('You are not authorized to perform this operation!');
