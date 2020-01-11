@@ -10,7 +10,7 @@ employeeRouter.use(authenticate.verifyUser);
 employeeRouter
   .route('/')
   .get(authenticate.verifyAdmin, (req, res, next) => {
-    Employee.find()
+    Employee.find({ isVerified: true, role: { $in: ['emp', 'qrg'] } })
       .then(
         employees => {
           res.statusCode = 200;
