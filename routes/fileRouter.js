@@ -2,6 +2,8 @@ var express = require('express');
 const bodyParse = require('body-parser');
 var File = require('../models/file');
 var fileRouter = express.Router();
+var QRCode = require('qrcode');
+var path = require('path');
 
 fileRouter.use(bodyParse.json());
 
@@ -114,4 +116,23 @@ fileRouter
       .catch(err => next(err));
   });
 
+fileRouter.route('/new/qr').get((req, res, next) => {
+  console.log();
+  QRCode.toFile(
+    path.join(__dirname, '../public/qr/image.png'),
+    JSON.stringify({
+      name: 'Amrit',
+      _id: 'sajhfdkhakjshdfi8763928 9bn9879r8n9'
+    }),
+    { type: 'png' },
+    function(err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Saved successfully');
+      }
+    }
+  );
+  return next();
+});
 module.exports = fileRouter;

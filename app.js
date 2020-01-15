@@ -62,7 +62,7 @@ app.use('/files', fileRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDoc));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.use('/imageUpload', uploadRouter);
 
