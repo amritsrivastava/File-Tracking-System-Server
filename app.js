@@ -12,6 +12,7 @@ var usersRouter = require('./routes/users');
 var uploadRouter = require('./routes/uploadRouter');
 var processRouter = require('./routes/processRouter');
 var employeeRouter = require('./routes/employeeRouter');
+var employeeFileRouter = require('./routes/employeeFileRouter');
 var fileRouter = require('./routes/fileRouter');
 var verifyEmployeeRouter = require('./routes/verifyEmployeeRouter');
 const apiDoc = require('./docs/apiDoc.json');
@@ -59,6 +60,7 @@ app.use('/employees', employeeRouter);
 app.use('/employee/verify', verifyEmployeeRouter);
 app.use('/processes', processRouter);
 app.use('/files', fileRouter);
+app.use('/file/employee', employeeFileRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDoc));
 
