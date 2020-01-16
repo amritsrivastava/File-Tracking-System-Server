@@ -16,6 +16,7 @@ var employeeFileRouter = require('./routes/employeeFileRouter');
 var fileRouter = require('./routes/fileRouter');
 var verifyEmployeeRouter = require('./routes/verifyEmployeeRouter');
 const apiDoc = require('./docs/apiDoc.json');
+const croneConfig = require('./scheduler/crone');
 
 const mongoose = require('mongoose');
 
@@ -30,6 +31,8 @@ connect.then(
 );
 
 var app = express();
+
+croneConfig.task.stop();
 
 app.all('*', (req, res, next) => {
   if (req.secure) {
