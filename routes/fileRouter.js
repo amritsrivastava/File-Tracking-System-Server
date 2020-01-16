@@ -72,7 +72,10 @@ fileRouter
                                   'Content-Type',
                                   'application/json'
                                 );
-                                res.json(resp);
+                                res.json({
+                                  qr: `${config.secureHost}public/qr/${resp._id}.png`,
+                                  status: 'File added successfully'
+                                });
                               }
                             },
                             err => next(err)
