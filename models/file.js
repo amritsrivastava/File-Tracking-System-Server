@@ -2,9 +2,22 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var File = new Schema({
+  name: {
+    type: String,
+    required: true
+  },
   processName: {
     type: String,
     required: true
+  },
+  processTitle: {
+    type: String,
+    default: ''
+  },
+  qr: String,
+  isProcessStarted: {
+    type: Boolean,
+    default: false
   },
   steps: [
     {
@@ -31,11 +44,13 @@ var File = new Schema({
         required: true
       },
       empID: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
       },
       scannedOn: Date,
-      completedOn: Date
+      completedOn: Date,
+      deadline: Date
     }
   ]
 });

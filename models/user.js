@@ -25,7 +25,8 @@ var User = new Schema({
   role: {
     type: String,
     default: 'emp'
-  }
+  },
+  files: [{ type: mongoose.Schema.Types.ObjectId, ref: 'File' }]
 });
 
 User.plugin(passportLocalMongoose, {
