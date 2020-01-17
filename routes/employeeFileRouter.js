@@ -17,22 +17,30 @@ employeeFileRouter
       .lean()
       .then(
         resp => {
-          const fileObj = resp.files.map(file => {
-            let userStep;
-            file.steps.forEach(step => {
-              if (JSON.stringify(step.empID) == JSON.stringify(req.user._id)) {
-                userStep = step;
-              }
+          if (resp.files) {
+            const fileObj = resp.files.map(file => {
+              let userStep;
+              file.steps.forEach(step => {
+                if (
+                  JSON.stringify(step.empID) == JSON.stringify(req.user._id)
+                ) {
+                  userStep = step;
+                }
+              });
+              return {
+                name: file.name,
+                processTitle: file.processTitle,
+                step: userStep
+              };
             });
-            return {
-              name: file.name,
-              processTitle: file.processTitle,
-              step: userStep
-            };
-          });
-          res.statusCode = 200;
-          res.setHeader('Content-Type', 'application/json');
-          res.json(fileObj);
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json(fileObj);
+          } else {
+            res.statusCode = 200;
+            res.setHeader('Content-Type', 'application/json');
+            res.json([]);
+          }
         },
         err => next(err)
       )

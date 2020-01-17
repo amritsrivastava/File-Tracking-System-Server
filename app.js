@@ -17,7 +17,7 @@ var fileRouter = require('./routes/fileRouter');
 var verifyEmployeeRouter = require('./routes/verifyEmployeeRouter');
 var qrgRouter = require('./routes/qrgRouter');
 const apiDoc = require('./docs/apiDoc.json');
-const croneConfig = require('./scheduler/crone');
+const croneConfig = require('./utils/crone');
 
 const mongoose = require('mongoose');
 
