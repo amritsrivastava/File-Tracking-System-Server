@@ -15,6 +15,7 @@ var employeeRouter = require('./routes/employeeRouter');
 var employeeFileRouter = require('./routes/employeeFileRouter');
 var fileRouter = require('./routes/fileRouter');
 var verifyEmployeeRouter = require('./routes/verifyEmployeeRouter');
+var qrgRouter = require('./routes/qrgRouter');
 const apiDoc = require('./docs/apiDoc.json');
 const croneConfig = require('./scheduler/crone');
 
@@ -64,6 +65,7 @@ app.use('/employee/verify', verifyEmployeeRouter);
 app.use('/processes', processRouter);
 app.use('/files', fileRouter);
 app.use('/file/employee', employeeFileRouter);
+app.use('/qrg', qrgRouter);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(apiDoc));
 

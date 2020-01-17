@@ -34,10 +34,6 @@ var File = new Schema({
         required: true
       },
       desc: String,
-      sno: {
-        type: Number,
-        required: true
-      },
       status: {
         type: Boolean,
         default: false,
