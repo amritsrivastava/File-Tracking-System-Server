@@ -2,6 +2,7 @@ var express = require('express');
 const bodyParse = require('body-parser');
 var Process = require('../models/process');
 var qrgRouter = express.Router();
+
 qrgRouter.use(bodyParse.json());
 
 qrgRouter.route('/process').get((req, res, next) => {

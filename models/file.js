@@ -19,6 +19,11 @@ var File = new Schema({
     type: Boolean,
     default: false
   },
+  status: {
+    type: Boolean,
+    default: false,
+    required: true
+  },
   steps: [
     {
       title: {

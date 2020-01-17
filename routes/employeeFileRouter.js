@@ -3,6 +3,7 @@ const bodyParse = require('body-parser');
 var File = require('../models/file');
 var User = require('../models/user');
 var employeeFileRouter = express.Router();
+const dateMath = require('date-arithmetic');
 var authenticate = require('../authenticate');
 
 employeeFileRouter.use(bodyParse.json());
@@ -49,14 +50,19 @@ employeeFileRouter
             file => {
               for (let i = 0; i < file.steps.length; i++) {
                 if (
+                  file.steps[i].status === false &&
                   JSON.stringify(req.user._id) ===
-                  JSON.stringify(file.steps[i].empID)
+                    JSON.stringify(file.steps[i].empID)
                 ) {
                   file.steps[i].status = true;
+                  file.steps[i].completedOn = new Date().toISOString();
+                  if (i === file.steps.length - 1) {
+                    file.status = true;
+                  }
                   break;
                 }
               }
-              File.findByIdAndUpdate(obj._id, { steps: file.steps })
+              File.findByIdAndUpdate(obj._id, file)
                 .then(
                   resp => {
                     User.findById(req.user._id)
@@ -127,6 +133,11 @@ employeeFileRouter
             if (!file.steps[i].status) {
               file.steps[i].empID = req.user._id;
               file.steps[i].scannedOn = new Date().toISOString();
+              file.steps[i].deadline = dateMath.add(
+                file.steps[i].scannedOn,
+                file.steps[i].duration,
+                'day'
+              );
               break;
             }
           }
@@ -147,18 +158,27 @@ employeeFileRouter
   })
   .put((req, res, next) => {
     File.findById(req.params.fileId)
+      .lean()
       .then(
         file => {
           for (let i = 0; i < file.steps.length; i++) {
             if (
+              file.steps[i].status === false &&
               JSON.stringify(req.user._id) ===
-              JSON.stringify(file.steps[i].empID)
+                JSON.stringify(file.steps[i].empID)
             ) {
               file.steps[i].status = true;
+              file.steps[i].completedOn = new Date().toISOString();
+              if (i === file.steps.length - 1) {
+                file.status = true;
+              }
               break;
             }
           }
-          File.findByIdAndUpdate(req.params.empID, { steps: file.steps })
+          File.findByIdAndUpdate(req.params.fileId, {
+            steps: file.steps,
+            status: file.status
+          })
             .then(
               resp => {
                 User.findById(req.user._id)
