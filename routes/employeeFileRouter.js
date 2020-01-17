@@ -141,7 +141,10 @@ employeeFileRouter
               break;
             }
           }
-          File.findByIdAndUpdate(req.params.fileId, { steps: file.steps }).then(
+          File.findByIdAndUpdate(req.params.fileId, {
+            isProcessStarted: true,
+            steps: file.steps
+          }).then(
             resp => {
               res.statusCode = 200;
               res.setHeader('Content-Type', 'application/json');

@@ -33,7 +33,7 @@ connect.then(
 
 var app = express();
 
-croneConfig.task.stop();
+croneConfig.task.start();
 
 app.all('*', (req, res, next) => {
   if (req.secure) {
