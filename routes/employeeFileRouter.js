@@ -146,10 +146,14 @@ employeeFileRouter
             steps: file.steps
           }).then(
             resp => {
-              res.statusCode = 200;
-              res.setHeader('Content-Type', 'application/json');
-              res.json({
-                status: 'File added successfully'
+              User.findByIdAndUpdate(req.user._id, {
+                files: { $push: [req.params.fileId] }
+              }).then(resp => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json({
+                  status: 'File added successfully'
+                });
               });
             },
             err => next(err)
