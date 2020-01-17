@@ -155,7 +155,7 @@ employeeFileRouter
           }).then(
             resp => {
               User.findByIdAndUpdate(req.user._id, {
-                files: { $push: [req.params.fileId] }
+                $push: { files: req.params.fileId }
               }).then(resp => {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
