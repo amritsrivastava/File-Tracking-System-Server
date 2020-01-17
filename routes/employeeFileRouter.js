@@ -66,7 +66,21 @@ employeeFileRouter
                   file.steps[i].completedOn = new Date().toISOString();
                   if (i === file.steps.length - 1) {
                     file.status = true;
+                    break;
                   }
+                  User.find({
+                    division: file.steps[i + 1].division
+                  }).then(users => {
+                    if (users) {
+                      users.forEach(user => {
+                        Mailer({
+                          to: user.email,
+                          subject: `New file in your division`,
+                          text: `A file named ${file.name} with file id ${file._id} is assigned to your division.`
+                        });
+                      });
+                    }
+                  });
                   break;
                 }
               }

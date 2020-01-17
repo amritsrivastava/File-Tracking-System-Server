@@ -8,6 +8,7 @@ var fileRouter = express.Router();
 var authenticate = require('../authenticate');
 var QRCode = require('qrcode');
 var path = require('path');
+const Mailer = require('../utils/nodemailer');
 
 fileRouter.use(bodyParse.json());
 fileRouter.use(authenticate.verifyUser);
@@ -66,6 +67,19 @@ fileRouter
                         })
                           .then(
                             resp => {
+                              User.find({
+                                division: process.steps[0].division
+                              }).then(users => {
+                                if (users) {
+                                  users.forEach(user => {
+                                    Mailer({
+                                      to: user.email,
+                                      subject: `New file in your division`,
+                                      text: `A file named ${file.name} with file id ${file._id} is assigned to your division.`
+                                    });
+                                  });
+                                }
+                              });
                               if (resp) {
                                 res.statusCode = 200;
                                 res.setHeader(
