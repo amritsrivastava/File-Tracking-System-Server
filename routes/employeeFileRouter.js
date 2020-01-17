@@ -77,7 +77,7 @@ employeeFileRouter
                     break;
                   }
                   User.find({
-                    division: file.steps[i + 1].division
+                    division: file.steps[i].division
                   }).then(users => {
                     if (users) {
                       users.forEach(user => {
@@ -224,7 +224,7 @@ employeeFileRouter
           if (i === file.steps.length - 1) {
             nextStep = 'Completed';
           } else {
-            nextStep = file.steps[i + 1].division;
+            nextStep = file.steps[i].division;
           }
           File.findByIdAndUpdate(req.params.fileId, {
             steps: file.steps,
