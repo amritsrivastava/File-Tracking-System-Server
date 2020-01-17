@@ -25,7 +25,11 @@ employeeFileRouter
                   JSON.stringify(step.empID) == JSON.stringify(req.user._id)
                 ) {
                   userStep = step;
-                  nextStep = file.steps[i].division;
+                  if (i === file.steps.length - 1) {
+                    nextStep = 'File process completed';
+                  } else {
+                    nextStep = file.steps[i].division;
+                  }
                 }
               });
               return {
