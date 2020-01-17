@@ -28,6 +28,7 @@ employeeFileRouter
                 }
               });
               return {
+                _id: file._id,
                 name: file.name,
                 processTitle: file.processTitle,
                 step: userStep
