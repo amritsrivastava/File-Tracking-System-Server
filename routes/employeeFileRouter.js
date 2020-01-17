@@ -16,7 +16,7 @@ employeeFileRouter
       .populate('files')
       .lean()
       .then(
-        resp => {
+        (resp = []) => {
           const fileObj = resp.files.map(file => {
             let userStep;
             file.steps.forEach(step => {
