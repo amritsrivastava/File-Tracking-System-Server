@@ -5,6 +5,7 @@ var User = require('../models/user');
 var employeeFileRouter = express.Router();
 const dateMath = require('date-arithmetic');
 var authenticate = require('../authenticate');
+const Mailer = require('../utils/nodemailer');
 
 employeeFileRouter.use(bodyParse.json());
 employeeFileRouter.use(authenticate.verifyUser);
@@ -76,8 +77,9 @@ employeeFileRouter
                     file.status = true;
                     break;
                   }
+                  console.log(i);
                   User.find({
-                    division: file.steps[i].division
+                    division: file.steps[i + 1].division
                   }).then(users => {
                     if (users) {
                       users.forEach(user => {
@@ -216,7 +218,22 @@ employeeFileRouter
               file.steps[i].completedOn = new Date().toISOString();
               if (i === file.steps.length - 1) {
                 file.status = true;
+                break;
               }
+              console.log(i);
+              User.find({
+                division: file.steps[i + 1].division
+              }).then(users => {
+                if (users) {
+                  users.forEach(user => {
+                    Mailer({
+                      to: user.email,
+                      subject: `New file in your division`,
+                      text: `A file named ${file.name} with file id ${file._id} is assigned to your division.`
+                    });
+                  });
+                }
+              });
               break;
             }
           }
