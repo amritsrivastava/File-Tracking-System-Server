@@ -57,7 +57,8 @@ employeeFileRouter
         File.findById(obj._id)
           .then(
             file => {
-              for (let i = 0; i < file.steps.length; i++) {
+              let i;
+              for (i = 0; i < file.steps.length; i++) {
                 if (
                   file.steps[i].status === false &&
                   JSON.stringify(req.user._id) ===
@@ -85,6 +86,12 @@ employeeFileRouter
                   break;
                 }
               }
+              let nextStep;
+              if (i === file.steps.length - 1) {
+                nextStep = 'Completed';
+              } else {
+                nextStep = file.steps[i + 1].division;
+              }
               File.findByIdAndUpdate(obj._id, file)
                 .then(
                   resp => {
@@ -98,7 +105,8 @@ employeeFileRouter
                             res.statusCode = 200;
                             res.setHeader('Content-Type', 'application/json');
                             res.json({
-                              status: 'Status updated successfully'
+                              status: 'Status updated successfully',
+                              nextStep
                             });
                           },
                           err => next(err)
@@ -191,7 +199,8 @@ employeeFileRouter
       .lean()
       .then(
         file => {
-          for (let i = 0; i < file.steps.length; i++) {
+          let i;
+          for (i = 0; i < file.steps.length; i++) {
             if (
               file.steps[i].status === false &&
               JSON.stringify(req.user._id) ===
@@ -204,6 +213,12 @@ employeeFileRouter
               }
               break;
             }
+          }
+          let nextStep;
+          if (i === file.steps.length - 1) {
+            nextStep = 'Completed';
+          } else {
+            nextStep = file.steps[i + 1].division;
           }
           File.findByIdAndUpdate(req.params.fileId, {
             steps: file.steps,
@@ -221,7 +236,8 @@ employeeFileRouter
                         res.statusCode = 200;
                         res.setHeader('Content-Type', 'application/json');
                         res.json({
-                          status: 'Status updated successfully'
+                          status: 'Status updated successfully',
+                          nextStep
                         });
                       },
                       err => next(err)

@@ -88,7 +88,8 @@ fileRouter
                                 );
                                 res.json({
                                   qr: `${config.secureHost}public/qr/${resp._id}.png`,
-                                  status: 'File added successfully'
+                                  status: 'File added successfully',
+                                  nextDivision: process.steps[0].division
                                 });
                               }
                             },
