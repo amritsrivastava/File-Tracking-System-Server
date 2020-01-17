@@ -29,11 +29,7 @@ var Process = new Schema({
         type: String,
         required: true
       },
-      desc: String,
-      sno: {
-        type: Number,
-        required: true
-      }
+      desc: String
     }
   ]
 });
