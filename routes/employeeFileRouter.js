@@ -19,19 +19,21 @@ employeeFileRouter
         resp => {
           if (resp.files) {
             const fileObj = resp.files.map(file => {
-              let userStep;
-              file.steps.forEach(step => {
+              let userStep, nextStep;
+              file.steps.forEach((step, i) => {
                 if (
                   JSON.stringify(step.empID) == JSON.stringify(req.user._id)
                 ) {
                   userStep = step;
+                  nextStep = file.steps[i].division;
                 }
               });
               return {
                 _id: file._id,
                 name: file.name,
                 processTitle: file.processTitle,
-                step: userStep
+                step: userStep,
+                nextStep
               };
             });
             res.statusCode = 200;
