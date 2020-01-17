@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer');
 
-export async function sendEmail(data) {
+module.exports = async function sendEmail(data) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
       user: 'amrits.test@gmail.com',
-      pass: 'Test@123456'
+      pass: 'Amrit@test@password1'
     }
   });
 
@@ -18,4 +18,4 @@ export async function sendEmail(data) {
   });
 
   return data;
-}
+};
